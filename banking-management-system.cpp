@@ -3,11 +3,11 @@ using namespace std;
 class BankAccount
 {
 protected:
-    int accountNumber, balance;
+    int accountNumber, balance = 0;
     string accountHolderName;
 
 public:
-    void createAccount(int acnumber, string name, int balance)
+    void createAccount(int acnumber, string name)
     {
         this->accountNumber = acnumber;
         this->balance = balance;
@@ -31,7 +31,7 @@ public:
 
     void deposit(int amount)
     {
-        this->balance = amount;
+        this->balance += amount;
         cout << "Amount Added Successfully ! ";
     }
     void withdraw(int amount)
@@ -59,14 +59,16 @@ public:
 
     void calculateInterest(double interestRate)
     {
-        this->balance = (this->balance / 100) * interestRate;
+        this->balance += (this->balance / 100) * interestRate;
+        cout << "Interest Added Successfully ! ";
     }
 };
 int main()
 {
     SavingAccount account[10];
-    string name;
-    int accountNumber, count = 0, password, balance = 0;
+    string password, name;
+    int accountNumber, count = 0;
+
     int choice;
 
     do
@@ -94,7 +96,8 @@ int main()
             cout << "Set Password : ";
             cin >> password;
 
-            account[count].createAccount(accountNumber, name, balance);
+            account[count].createAccount(accountNumber, name);
+            account[count].setPassword(password);
             count++;
 
             break;
@@ -125,14 +128,15 @@ int main()
             for (int i = 0; i < count; i++)
             {
 
-                if (account[i].getAccNumber() == acnumber && account[i].getPassword() == password)
+                if ((account[i].getAccNumber() == acnumber) && ((account[i].getPassword() == password)))
                 {
+
                     account[i].deposit(amount);
                     flag = true;
-                    // break;
+                    break;
                 }
             }
-            if (flag)
+            if (flag == false)
             {
                 cout << "Account not Found or password incorrect ! ";
             }
@@ -158,12 +162,11 @@ int main()
                 if (account[i].getAccNumber() == acnumber)
                 {
                     account[i].withdraw(amount);
-
                     flag = true;
                     break;
                 }
             }
-            if (flag)
+            if (flag == false)
             {
                 cout << "No Account Found ! ";
             }
@@ -193,7 +196,7 @@ int main()
                     break;
                 }
             }
-            if (flag)
+            if (flag == false)
             {
                 cout << "No Account Found ! ";
             }
